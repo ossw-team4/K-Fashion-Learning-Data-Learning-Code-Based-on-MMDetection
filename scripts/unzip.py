@@ -1,9 +1,8 @@
 import zipfile
 import os
-import urllib.request
-urllib.request.urlretrieve("https://github.com/ossw-team4/K-Fashion-MMDetection/releases/download/1.0.0/Mask_RCNN_Dataset.zip", "../data/clothes/Mask_RCNN_Dataset.zip")
 
-#zip파일을 /data에 위치
+# zip파일을 정해진 경로에 위치
+# /data/clothes 생성 후 해당 파일을 
 with zipfile.ZipFile("data/clothes/Mask_RCNN_Dataset.zip", 'r') as zip_ref:
     zip_ref.extractall("data")
 
