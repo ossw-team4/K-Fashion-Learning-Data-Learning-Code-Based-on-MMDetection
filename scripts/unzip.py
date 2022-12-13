@@ -2,8 +2,17 @@ import zipfile
 import os
 
 # zip파일을 정해진 경로에 위치
-# /data/clothes 생성 후 해당 파일을 
-with zipfile.ZipFile("data/clothes/Mask_RCNN_Dataset.zip", 'r') as zip_ref:
+# /data/clothes 생성
+extension = ".zip"
+
+zip_name=""
+for item in os.listdir("data/clothes"):
+    if item.endswith(extension):
+        zip_name = item
+        break
+
+
+with zipfile.ZipFile("data/clothes/" + zip_name, 'r') as zip_ref:
     zip_ref.extractall("data")
 
 path_first = os.getcwd() + "/data"
@@ -11,7 +20,6 @@ path_second = "data/clothes"
 #os.mkdir(data)
 os.chdir("./data")
 
-extension = ".zip"
 
 for item in os.listdir(path_first):
      if item.endswith(extension):
