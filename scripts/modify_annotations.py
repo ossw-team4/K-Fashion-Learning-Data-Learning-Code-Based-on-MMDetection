@@ -1,6 +1,6 @@
 import os
 
-path_dir = '../data/clothes'
+path_dir = './data/clothes'
 dir_list = os.listdir(path_dir)
 
 def replace_str(file_path, old_str, new_str):
@@ -27,6 +27,8 @@ tmp_path = [
 
 i = 0
 for dir in dir_list:
+    if dir[-4:] == ".zip":
+        continue
     if dir=="remove_tmp.py":
         continue
     file_path = path_dir + "/" + str(dir) + "/annotations/instances_default.json"
