@@ -80,23 +80,9 @@ for dataset in datasets_meta:
     classes=classes,
     ann_file=ann_file))
 
-val_datasets = []
-
-for dataset in random.sample(datasets_meta, 3):
-    img_prefix = dataset_root + dataset[0] + '/images'
-    ann_file = dataset_root + dataset[0] + '/annotations/instances_default.json'
-    classes = dataset[1]
-
-    val_datasets.append(dict(
-    type=dataset_type,
-    pipeline=train_pipeline,
-    img_prefix=img_prefix,
-    classes=classes,
-    ann_file=ann_file))
-
 data = dict(
     train=train_datasets,
-    val=val_datasets,
-    test=val_datasets)
+    val=train_datasets,
+    test=train_datasets)
 
 load_from = ''
