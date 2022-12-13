@@ -4,21 +4,20 @@ import os
 # zip파일을 정해진 경로에 위치
 # /data/clothes 생성
 extension = ".zip"
-
-zip_name=""
-for item in os.listdir("data/clothes"):
+os.mkdir(os.getcwd() + "/data/clothes")
+zip_name = ""
+for item in os.listdir("data"):
     if item.endswith(extension):
         zip_name = item
-        break
 
 
-with zipfile.ZipFile("data/clothes/" + zip_name, 'r') as zip_ref:
-    zip_ref.extractall("data")
+with zipfile.ZipFile(os.getcwd() + "/data/" + zip_name, 'r') as zip_ref:
+    zip_ref.extractall("data/clothes")
 
-path_first = os.getcwd() + "/data"
+path_first = os.getcwd() + "/data/clothes"
 path_second = "data/clothes"
 #os.mkdir(data)
-os.chdir("./data")
+os.chdir("./data/clothes")
 
 
 for item in os.listdir(path_first):
