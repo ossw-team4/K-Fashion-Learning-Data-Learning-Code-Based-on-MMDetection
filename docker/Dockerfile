@@ -28,8 +28,14 @@ ENV FORCE_CUDA="1"
 RUN pip install --no-cache-dir -r requirements/build.txt
 RUN pip install --no-cache-dir -e .
 
+RUN apt-get update && apt-get install -y wget unzip locales
+
+# Set Locale
+RUN localedef -f UTF-8 -i ko_KR ko_KR.UTF-8
+ENV LC_ALL ko_KR.UTF-8
+ENV PYTHONIOENCODING=utf-8
+
 # Download Dataset
-RUN apt-get update && apt-get install -y wget unzip
 RUN wget "https://url.kr/hy7v8f" -O clothes.zip
 RUN mkdir /mmdetection/data
 RUN mv clothes.zip /mmdetection/data/
