@@ -29,7 +29,7 @@ clothes/
 
 제공된 Dataset의 모든 이미지는 `clothes/images`에 위치합니다.
 
-각 Dataset에 들어있던 `instances_default.json`을 [Merge_COCO_FILES](https://github.com/mohamadmansourX/Merge_COCO_FILES)를 이용하여 하나의 Annotation으로 병합하고, [cocosplit](https://github.com/akarazniewicz/cocosplit)을 이용하여 `train.json`과 `val.json`으로 나누었습니다. 그 결과 Train 집합과 Validation 집합은 8(4760):2(1191)의 비율로 나sn어졌습니다.
+각 Dataset에 들어있던 `instances_default.json`을 [Merge_COCO_FILES](https://github.com/mohamadmansourX/Merge_COCO_FILES)를 이용하여 하나의 Annotation으로 병합하고, [cocosplit](https://github.com/akarazniewicz/cocosplit)을 이용하여 `train.json`과 `val.json`으로 나누었습니다. 그 결과 Train 집합과 Validation 집합은 8(4760):2(1191)의 비율로 나어졌습니다.
 
 `train.json`과 `val.json`의 `categories`는 다음의 표와 같이 설정하였습니다.
 
