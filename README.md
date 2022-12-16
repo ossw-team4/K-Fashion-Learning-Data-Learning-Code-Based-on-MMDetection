@@ -119,6 +119,11 @@ MMDetection을 이용한 K-Fashion 데이터의 Train 및 Validation 절차에 �
 
 3. Host의 `~/learning_results`에서 로그, 가중치, Detection 결과 등을 확인합니다.
 
+## Detection Sample Images
+
+![Result Sample](resources/result_sample_1.jpg)
+![Result Sample](resources/result_sample_2.jpg)
+
 ## Reference
 
 - [Merge_COCO_FILES](https://github.com/mohamadmansourX/Merge_COCO_FILES)
