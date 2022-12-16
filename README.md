@@ -1,370 +1,126 @@
-<div align="center">
-  <img src="resources/mmdet-logo.png" width="600"/>
-  <div>&nbsp;</div>
-  <div align="center">
-    <b><font size="5">OpenMMLab website</font></b>
-    <sup>
-      <a href="https://openmmlab.com">
-        <i><font size="4">HOT</font></i>
-      </a>
-    </sup>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <b><font size="5">OpenMMLab platform</font></b>
-    <sup>
-      <a href="https://platform.openmmlab.com">
-        <i><font size="4">TRY IT OUT</font></i>
-      </a>
-    </sup>
-  </div>
-  <div>&nbsp;</div>
+# K-Fashion 데이터 학습 및 환경 구축
 
-[![PyPI](https://img.shields.io/pypi/v/mmdet)](https://pypi.org/project/mmdet)
-[![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmdetection.readthedocs.io/en/latest/)
-[![badge](https://github.com/open-mmlab/mmdetection/workflows/build/badge.svg)](https://github.com/open-mmlab/mmdetection/actions)
-[![codecov](https://codecov.io/gh/open-mmlab/mmdetection/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmdetection)
-[![license](https://img.shields.io/github/license/open-mmlab/mmdetection.svg)](https://github.com/open-mmlab/mmdetection/blob/master/LICENSE)
-[![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmdetection.svg)](https://github.com/open-mmlab/mmdetection/issues)
-[![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmdetection.svg)](https://github.com/open-mmlab/mmdetection/issues)
+> 경기대학교 2022-2 오픈소스SW실습 4조 최종 과제
 
-[📘Documentation](https://mmdetection.readthedocs.io/en/stable/) |
-[🛠️Installation](https://mmdetection.readthedocs.io/en/stable/get_started.html) |
-[👀Model Zoo](https://mmdetection.readthedocs.io/en/stable/model_zoo.html) |
-[🆕Update News](https://mmdetection.readthedocs.io/en/stable/changelog.html) |
-[🚀Ongoing Projects](https://github.com/open-mmlab/mmdetection/projects) |
-[🤔Reporting Issues](https://github.com/open-mmlab/mmdetection/issues/new/choose)
+## 발표 자료와의 차이점
 
-</div>
+본 프로젝트의 결과는 발표 자료의 내용과는 매우 상이합니다. 가장 큰 차이점은 `실습 환경`과 `Dataset 처리 방법`입니다.
 
-<div align="center">
+1. 변경된 실습 환경에 대해
 
-English | [简体中文](README_zh-CN.md)
+   > 발표 자료에서의 실습 환경은 Anaconda3 가상 환경과 CPU-based Train을 진행했습니다. 그러나 최종 결과물은 Docker를 이용한 GPU-based Train을 기준으로 개발되었습니다.
 
-</div>
+2. 변경된 Dataset 처리 방법에 대해
 
-## Introduction
+   > 발표 자료에서는 Dataset의 종류별로 구분되어 있는 25개의 Annotation을 구성 파일에서 엮어주는 방식으로 학습을 진행했습니다.
+   >
+   > 하지만 최종 결과물에서는 [Merge_COCO_FILES](https://github.com/mohamadmansourX/Merge_COCO_FILES)를 이용하여 25개의 Annotation을 하나로 병합하였습니다. 그리고 해당 Annotation을 Train Dataset(`train.json`)과 Validation Dataset(`val.json`)으로 나누어 이용하였습니다.
 
-MMDetection is an open source object detection toolbox based on PyTorch. It is
-a part of the [OpenMMLab](https://openmmlab.com/) project.
+## Dataset 처리
 
-The master branch works with **PyTorch 1.5+**.
+제공된 Dataset을 다음과 같은 구조로 정리했습니다.
 
-<img src="https://user-images.githubusercontent.com/12907710/137271636-56ba1cd2-b110-4812-8221-b4c120320aa9.png"/>
-
-<details open>
-<summary>Major features</summary>
-
-- **Modular Design**
-
-  We decompose the detection framework into different components and one can easily construct a customized object detection framework by combining different modules.
-
-- **Support of multiple frameworks out of box**
-
-  The toolbox directly supports popular and contemporary detection frameworks, *e.g.* Faster RCNN, Mask RCNN, RetinaNet, etc.
-
-- **High efficiency**
-
-  All basic bbox and mask operations run on GPUs. The training speed is faster than or comparable to other codebases, including [Detectron2](https://github.com/facebookresearch/detectron2), [maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark) and [SimpleDet](https://github.com/TuSimple/simpledet).
-
-- **State of the art**
-
-  The toolbox stems from the codebase developed by the *MMDet* team, who won [COCO Detection Challenge](http://cocodataset.org/#detection-leaderboard) in 2018, and we keep pushing it forward.
-
-</details>
-
-Apart from MMDetection, we also released a library [mmcv](https://github.com/open-mmlab/mmcv) for computer vision research, which is heavily depended on by this toolbox.
-
-## What's New
-
-### 💎 Stable version
-
-**2.26.0** was released in 23/11/2022:
-
-- Support training on [NPU](docs/en/device/npu.md).
-
-Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
-
-For compatibility changes between different versions of MMDetection, please refer to [compatibility.md](docs/en/compatibility.md).
-
-### 🌟 Preview of 3.x version
-
-A brand new version of **MMDetection v3.0.0rc0** was released in 31/8/2022:
-
-- Unifies interfaces of all components based on [MMEngine](https://github.com/open-mmlab/mmengine).
-- Faster training and testing speed with complete support of mixed precision training.
-- Refactored and more flexible [architecture](https://mmdetection.readthedocs.io/en/v3.0.0rc0/overview.html).
-- Provides more strong baselines and a general semi-supervised object detection framework. See [tutorial of semi-supervised detection](https://mmdetection.readthedocs.io/en/v3.0.0rc0/user_guides/semi_det.html).
-- Allows any kind of single-stage model as an RPN in a two-stage model. See [tutorial](https://mmdetection.readthedocs.io/en/v3.0.0rc0/user_guides/single_stage_as_rpn.html).
-
-Find more new features in [3.x branch](https://github.com/open-mmlab/mmdetection/tree/3.x). Issues and PRs are welcome!
-
-## Installation
-
-Please refer to [Installation](docs/en/get_started.md/#Installation) for installation instructions.
-
-## Getting Started
-
-Please see [get_started.md](docs/en/get_started.md) for the basic usage of MMDetection. We provide [colab tutorial](demo/MMDet_Tutorial.ipynb) and [instance segmentation colab tutorial](demo/MMDet_InstanceSeg_Tutorial.ipynb), and other tutorials for:
-
-- [with existing dataset](docs/en/1_exist_data_model.md)
-- [with new dataset](docs/en/2_new_data_model.md)
-- [with existing dataset_new_model](docs/en/3_exist_data_new_model.md)
-- [learn about configs](docs/en/tutorials/config.md)
-- [customize_datasets](docs/en/tutorials/customize_dataset.md)
-- [customize data pipelines](docs/en/tutorials/data_pipeline.md)
-- [customize_models](docs/en/tutorials/customize_models.md)
-- [customize runtime settings](docs/en/tutorials/customize_runtime.md)
-- [customize_losses](docs/en/tutorials/customize_losses.md)
-- [finetuning models](docs/en/tutorials/finetune.md)
-- [export a model to ONNX](docs/en/tutorials/pytorch2onnx.md)
-- [export ONNX to TRT](docs/en/tutorials/onnx2tensorrt.md)
-- [weight initialization](docs/en/tutorials/init_cfg.md)
-- [how to xxx](docs/en/tutorials/how_to.md)
-
-## Overview of Benchmark and Model Zoo
-
-Results and models are available in the [model zoo](docs/en/model_zoo.md).
-
-<div align="center">
-  <b>Architectures</b>
-</div>
-<table align="center">
-  <tbody>
-    <tr align="center" valign="bottom">
-      <td>
-        <b>Object Detection</b>
-      </td>
-      <td>
-        <b>Instance Segmentation</b>
-      </td>
-      <td>
-        <b>Panoptic Segmentation</b>
-      </td>
-      <td>
-        <b>Other</b>
-      </td>
-    </tr>
-    <tr valign="top">
-      <td>
-        <ul>
-            <li><a href="configs/fast_rcnn">Fast R-CNN (ICCV'2015)</a></li>
-            <li><a href="configs/faster_rcnn">Faster R-CNN (NeurIPS'2015)</a></li>
-            <li><a href="configs/rpn">RPN (NeurIPS'2015)</a></li>
-            <li><a href="configs/ssd">SSD (ECCV'2016)</a></li>
-            <li><a href="configs/retinanet">RetinaNet (ICCV'2017)</a></li>
-            <li><a href="configs/cascade_rcnn">Cascade R-CNN (CVPR'2018)</a></li>
-            <li><a href="configs/yolo">YOLOv3 (ArXiv'2018)</a></li>
-            <li><a href="configs/cornernet">CornerNet (ECCV'2018)</a></li>
-            <li><a href="configs/grid_rcnn">Grid R-CNN (CVPR'2019)</a></li>
-            <li><a href="configs/guided_anchoring">Guided Anchoring (CVPR'2019)</a></li>
-            <li><a href="configs/fsaf">FSAF (CVPR'2019)</a></li>
-            <li><a href="configs/centernet">CenterNet (ArXiv'2019)</a></li>
-            <li><a href="configs/libra_rcnn">Libra R-CNN (CVPR'2019)</a></li>
-            <li><a href="configs/tridentnet">TridentNet (ICCV'2019)</a></li>
-            <li><a href="configs/fcos">FCOS (ICCV'2019)</a></li>
-            <li><a href="configs/reppoints">RepPoints (ICCV'2019)</a></li>
-            <li><a href="configs/free_anchor">FreeAnchor (NeurIPS'2019)</a></li>
-            <li><a href="configs/cascade_rpn">CascadeRPN (NeurIPS'2019)</a></li>
-            <li><a href="configs/foveabox">Foveabox (TIP'2020)</a></li>
-            <li><a href="configs/double_heads">Double-Head R-CNN (CVPR'2020)</a></li>
-            <li><a href="configs/atss">ATSS (CVPR'2020)</a></li>
-            <li><a href="configs/nas_fcos">NAS-FCOS (CVPR'2020)</a></li>
-            <li><a href="configs/centripetalnet">CentripetalNet (CVPR'2020)</a></li>
-            <li><a href="configs/autoassign">AutoAssign (ArXiv'2020)</a></li>
-            <li><a href="configs/sabl">Side-Aware Boundary Localization (ECCV'2020)</a></li>
-            <li><a href="configs/dynamic_rcnn">Dynamic R-CNN (ECCV'2020)</a></li>
-            <li><a href="configs/detr">DETR (ECCV'2020)</a></li>
-            <li><a href="configs/paa">PAA (ECCV'2020)</a></li>
-            <li><a href="configs/vfnet">VarifocalNet (CVPR'2021)</a></li>
-            <li><a href="configs/sparse_rcnn">Sparse R-CNN (CVPR'2021)</a></li>
-            <li><a href="configs/yolof">YOLOF (CVPR'2021)</a></li>
-            <li><a href="configs/yolox">YOLOX (ArXiv'2021)</a></li>
-            <li><a href="configs/deformable_detr">Deformable DETR (ICLR'2021)</a></li>
-            <li><a href="configs/tood">TOOD (ICCV'2021)</a></li>
-            <li><a href="configs/ddod">DDOD (ACM MM'2021)</a></li>
-      </ul>
-      </td>
-      <td>
-        <ul>
-          <li><a href="configs/mask_rcnn">Mask R-CNN (ICCV'2017)</a></li>
-          <li><a href="configs/cascade_rcnn">Cascade Mask R-CNN (CVPR'2018)</a></li>
-          <li><a href="configs/ms_rcnn">Mask Scoring R-CNN (CVPR'2019)</a></li>
-          <li><a href="configs/htc">Hybrid Task Cascade (CVPR'2019)</a></li>
-          <li><a href="configs/yolact">YOLACT (ICCV'2019)</a></li>
-          <li><a href="configs/instaboost">InstaBoost (ICCV'2019)</a></li>
-          <li><a href="configs/solo">SOLO (ECCV'2020)</a></li>
-          <li><a href="configs/point_rend">PointRend (CVPR'2020)</a></li>
-          <li><a href="configs/detectors">DetectoRS (CVPR'2021)</a></li>
-          <li><a href="configs/solov2">SOLOv2 (NeurIPS'2020)</a></li>
-          <li><a href="configs/scnet">SCNet (AAAI'2021)</a></li>
-          <li><a href="configs/queryinst">QueryInst (ICCV'2021)</a></li>
-          <li><a href="configs/mask2former">Mask2Former (CVPR'2022)</a></li>
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li><a href="configs/panoptic_fpn">Panoptic FPN (CVPR'2019)</a></li>
-          <li><a href="configs/maskformer">MaskFormer (NeurIPS'2021)</a></li>
-          <li><a href="configs/mask2former">Mask2Former (CVPR'2022)</a></li>
-        </ul>
-      </td>
-      <td>
-        </ul>
-          <li><b>Contrastive Learning</b></li>
-        <ul>
-        <ul>
-          <li><a href="configs/selfsup_pretrain">SwAV (NeurIPS'2020)</a></li>
-          <li><a href="configs/selfsup_pretrain">MoCo (CVPR'2020)</a></li>
-          <li><a href="configs/selfsup_pretrain">MoCov2 (ArXiv'2020)</a></li>
-        </ul>
-        </ul>
-        </ul>
-          <li><b>Distillation</b></li>
-        <ul>
-        <ul>
-          <li><a href="configs/ld">Localization Distillation (CVPR'2022)</a></li>
-          <li><a href="configs/lad">Label Assignment Distillation (WACV'2022)</a></li>
-        </ul>
-        </ul>
-      </ul>
-      </td>
-    </tr>
-</td>
-    </tr>
-  </tbody>
-</table>
-
-<div align="center">
-  <b>Components</b>
-</div>
-<table align="center">
-  <tbody>
-    <tr align="center" valign="bottom">
-      <td>
-        <b>Backbones</b>
-      </td>
-      <td>
-        <b>Necks</b>
-      </td>
-      <td>
-        <b>Loss</b>
-      </td>
-      <td>
-        <b>Common</b>
-      </td>
-    </tr>
-    <tr valign="top">
-      <td>
-      <ul>
-        <li>VGG (ICLR'2015)</li>
-        <li>ResNet (CVPR'2016)</li>
-        <li>ResNeXt (CVPR'2017)</li>
-        <li>MobileNetV2 (CVPR'2018)</li>
-        <li><a href="configs/hrnet">HRNet (CVPR'2019)</a></li>
-        <li><a href="configs/empirical_attention">Generalized Attention (ICCV'2019)</a></li>
-        <li><a href="configs/gcnet">GCNet (ICCVW'2019)</a></li>
-        <li><a href="configs/res2net">Res2Net (TPAMI'2020)</a></li>
-        <li><a href="configs/regnet">RegNet (CVPR'2020)</a></li>
-        <li><a href="configs/resnest">ResNeSt (CVPRW'2022)</a></li>
-        <li><a href="configs/pvt">PVT (ICCV'2021)</a></li>
-        <li><a href="configs/swin">Swin (ICCV'2021)</a></li>
-        <li><a href="configs/pvt">PVTv2 (CVMJ'2022)</a></li>
-        <li><a href="configs/resnet_strikes_back">ResNet strikes back (NeurIPSW'2021)</a></li>
-        <li><a href="configs/efficientnet">EfficientNet (ICML'2019)</a></li>
-        <li><a href="configs/convnext">ConvNeXt (CVPR'2022)</a></li>
-      </ul>
-      </td>
-      <td>
-      <ul>
-        <li><a href="configs/pafpn">PAFPN (CVPR'2018)</a></li>
-        <li><a href="configs/nas_fpn">NAS-FPN (CVPR'2019)</a></li>
-        <li><a href="configs/carafe">CARAFE (ICCV'2019)</a></li>
-        <li><a href="configs/fpg">FPG (ArXiv'2020)</a></li>
-        <li><a href="configs/groie">GRoIE (ICPR'2020)</a></li>
-        <li><a href="configs/dyhead">DyHead (CVPR'2021)</a></li>
-      </ul>
-      </td>
-      <td>
-        <ul>
-          <li><a href="configs/ghm">GHM (AAAI'2019)</a></li>
-          <li><a href="configs/gfl">Generalized Focal Loss (NeurIPS'2020)</a></li>
-          <li><a href="configs/seesaw_loss">Seasaw Loss (CVPR'2021)</a></li>
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li><a href="configs/faster_rcnn/faster_rcnn_r50_fpn_ohem_1x_coco.py">OHEM (CVPR'2016)</a></li>
-          <li><a href="configs/gn">Group Normalization (ECCV'2018)</a></li>
-          <li><a href="configs/dcn">DCN (ICCV'2017)</a></li>
-          <li><a href="configs/dcnv2">DCNv2 (CVPR'2019)</a></li>
-          <li><a href="configs/gn+ws">Weight Standardization (ArXiv'2019)</a></li>
-          <li><a href="configs/pisa">Prime Sample Attention (CVPR'2020)</a></li>
-          <li><a href="configs/strong_baselines">Strong Baselines (CVPR'2021)</a></li>
-          <li><a href="configs/resnet_strikes_back">Resnet strikes back (NeurIPSW'2021)</a></li>
-        </ul>
-      </td>
-    </tr>
-</td>
-    </tr>
-  </tbody>
-</table>
-
-Some other methods are also supported in [projects using MMDetection](./docs/en/projects.md).
-
-## FAQ
-
-Please refer to [FAQ](docs/en/faq.md) for frequently asked questions.
-
-## Contributing
-
-We appreciate all contributions to improve MMDetection. Ongoing projects can be found in out [GitHub Projects](https://github.com/open-mmlab/mmdetection/projects). Welcome community users to participate in these projects. Please refer to [CONTRIBUTING.md](.github/CONTRIBUTING.md) for the contributing guideline.
-
-## Acknowledgement
-
-MMDetection is an open source project that is contributed by researchers and engineers from various colleges and companies. We appreciate all the contributors who implement their methods or add new features, as well as users who give valuable feedbacks.
-We wish that the toolbox and benchmark could serve the growing research community by providing a flexible toolkit to reimplement existing methods and develop their own new detectors.
-
-## Citation
-
-If you use this toolbox or benchmark in your research, please cite this project.
-
-```
-@article{mmdetection,
-  title   = {{MMDetection}: Open MMLab Detection Toolbox and Benchmark},
-  author  = {Chen, Kai and Wang, Jiaqi and Pang, Jiangmiao and Cao, Yuhang and
-             Xiong, Yu and Li, Xiaoxiao and Sun, Shuyang and Feng, Wansen and
-             Liu, Ziwei and Xu, Jiarui and Zhang, Zheng and Cheng, Dazhi and
-             Zhu, Chenchen and Cheng, Tianheng and Zhao, Qijie and Li, Buyu and
-             Lu, Xin and Zhu, Rui and Wu, Yue and Dai, Jifeng and Wang, Jingdong
-             and Shi, Jianping and Ouyang, Wanli and Loy, Chen Change and Lin, Dahua},
-  journal= {arXiv preprint arXiv:1906.07155},
-  year={2019}
-}
+```plain
+clothes/
+├─ images/
+├─ train.json
+├─ val.json
 ```
 
-## License
+제공된 Dataset의 모든 이미지는 `clothes/images`에 위치합니다.
 
-This project is released under the [Apache 2.0 license](LICENSE).
+각 Dataset에 들어있던 `instances_default.json`을 [Merge_COCO_FILES](https://github.com/mohamadmansourX/Merge_COCO_FILES)를 이용하여 하나의 Annotation으로 병합하고, [cocosplit](https://github.com/akarazniewicz/cocosplit)을 이용하여 `train.json`과 `val.json`으로 나누었습니다. 그 결과 Train 집합과 Validation 집합은 8(4760):2(1191)의 비율로 나sn어졌습니다.
 
-## Projects in OpenMMLab
+`train.json`과 `val.json`의 `categories`는 다음의 표와 같이 설정하였습니다.
 
-- [MMEngine](https://github.com/open-mmlab/mmengine): OpenMMLab foundational library for training deep learning models.
-- [MMCV](https://github.com/open-mmlab/mmcv): OpenMMLab foundational library for computer vision.
-- [MMEval](https://github.com/open-mmlab/mmeval): A unified evaluation library for multiple machine learning libraries.
-- [MIM](https://github.com/open-mmlab/mim): MIM installs OpenMMLab packages.
-- [MMClassification](https://github.com/open-mmlab/mmclassification): OpenMMLab image classification toolbox and benchmark.
-- [MMDetection](https://github.com/open-mmlab/mmdetection): OpenMMLab detection toolbox and benchmark.
-- [MMDetection3D](https://github.com/open-mmlab/mmdetection3d): OpenMMLab's next-generation platform for general 3D object detection.
-- [MMRotate](https://github.com/open-mmlab/mmrotate): OpenMMLab rotated object detection toolbox and benchmark.
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation): OpenMMLab semantic segmentation toolbox and benchmark.
-- [MMOCR](https://github.com/open-mmlab/mmocr): OpenMMLab text detection, recognition, and understanding toolbox.
-- [MMPose](https://github.com/open-mmlab/mmpose): OpenMMLab pose estimation toolbox and benchmark.
-- [MMHuman3D](https://github.com/open-mmlab/mmhuman3d): OpenMMLab 3D human parametric model toolbox and benchmark.
-- [MMSelfSup](https://github.com/open-mmlab/mmselfsup): OpenMMLab self-supervised learning toolbox and benchmark.
-- [MMRazor](https://github.com/open-mmlab/mmrazor): OpenMMLab model compression toolbox and benchmark.
-- [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab fewshot learning toolbox and benchmark.
-- [MMAction2](https://github.com/open-mmlab/mmaction2): OpenMMLab's next-generation action understanding toolbox and benchmark.
-- [MMTracking](https://github.com/open-mmlab/mmtracking): OpenMMLab video perception toolbox and benchmark.
-- [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab optical flow toolbox and benchmark.
-- [MMEditing](https://github.com/open-mmlab/mmediting): OpenMMLab image and video editing toolbox.
-- [MMGeneration](https://github.com/open-mmlab/mmgeneration): OpenMMLab image and video generative models toolbox.
-- [MMDeploy](https://github.com/open-mmlab/mmdeploy): OpenMMLab model deployment framework.
+| id  | name            |
+| --- | --------------- |
+| 0   | coat            |
+| 1   | jacket          |
+| 2   | jumper          |
+| 3   | cardigan        |
+| 4   | blouse          |
+| 5   | t-shirt         |
+| 6   | sweater         |
+| 7   | shirt           |
+| 8   | onepiece(dress) |
+| 9   | jumpsuite       |
+| 10  | pants           |
+| 11  | skirt           |
+
+## Pre-conditions
+
+- Windows(WSL2)의 경우
+
+  1. [NVIDIA 드라이버](https://www.nvidia.co.kr/Download/index.aspx?lang=kr)가 필요합니다.
+  2. [WSL2용 CUDA ToolKit](https://docs.nvidia.com/cuda/wsl-user-guide/index.html)이 필요합니다.
+  3. [Docker Desktop](https://www.docker.com/products/docker-desktop/)이 필요합니다.
+
+- Linux(focused on Ubuntu)의 경우
+  1. Linux용 NVIDIA 독점 드라이버가 필요합니다.
+  2. [nvidia-docker](https://github.com/NVIDIA/nvidia-docker)가 필요합니다.
+
+## Instruction
+
+MMDetection을 이용한 K-Fashion 데이터의 Train 및 Validation 절차에 대해 설명합니다.
+
+### Train
+
+1. 프로젝트를 복제합니다.
+
+   ```shell
+   git clone https://github.com/ossw-team4/K-Fashion-MMDetection.git
+   cd K-Fashion-MMDetection
+   ```
+
+2. Docker 이미지를 빌드 합니다.
+
+   > 주의!
+   >
+   > 사용 중인 그래픽카드에 따라 Dockerfile의 수정이 필요할 수 있습니다. 본 프로젝트의 Dockerfile은 NVIDIA RTX 30 Series에서 작동하도록 설정되어 있습니다. 이외의 그래픽 카드는 다음 단계에 따라 Dockerfile의 환경 변수를 수정해야 할 수 있습니다.
+   >
+   > 1. [CUDA GPUs](https://developer.nvidia.com/cuda-gpus)를 참고하여 사용 중인 그래픽 카드의 Compute Capability를 확인하고 `TORCH_CUDA_ARCH_LIST` 환경 변수를 수정하세요.
+   >
+   > 2. [pytorch dockerHub](https://hub.docker.com/r/pytorch/pytorch/tags)를 참고하여 `PYTORCH`, `CUDA`, `CUDNN` 환경 변수를 수정하세요.
+   >
+   > 3. 변경한 `CUDNN`과 `PYTORCH` 변수에 맞춰 mmcv의 주소를 다음과 같이 변경하세요.
+   >
+   >    `https://download.openmmlab.com/mmcv/dist/cu{CUDNN VER}/torch{PYTORCH VER}/index.html`
+
+   ```shell
+   docker build -t mmdetection docker/
+   ```
+
+3. mmdetection 컨테이너를 시작합니다.
+
+   ```shell
+   docker run --gpus all --shm-size=8g --name kfashion -it mmdetection
+   ```
+
+4. Train을 시작합니다. 결과물은 컨테이너의 `/mmdetection/work_dirs`에 저장됩니다.
+
+   ```shell
+   python tools/train.py configs/clothes/mask_rcnn_r50_caffe_fpn_mstrain-poly_1x_clothes.py
+   ```
+
+### Validation
+
+1. Validation을 시작합니다. Detection 결과는 `work_dirs/results/mask_rcnn_r50_caffe_fpn_mstrain-poly_1x_clothes`에 저장됩니다.
+
+   ```shell
+   python tools/test.py configs/clothes/mask_rcnn_r50_caffe_fpn_mstrain-poly_1x_clothes.py work_dirs/mask_rcnn_r50_caffe_fpn_mstrain-poly_1x_clothes/latest.pth --eval bbox segm --show-dir work_dirs/results/mask_rcnn_r50_caffe_fpn_mstrain-poly_1x_clothes
+   ```
+
+2. **컨테이너 터미널은 그대로 둔 채로 Host에서 새 터미널 창을 열고** 다음 명령어를 입력하여 결과물을 Host의 `~/learning_results`로 복사합니다.
+
+   ```shell
+   docker cp kfashion:/mmdetection/work_dirs ~/learning_results
+   ```
+
+3. Host의 `~/learning_results`에서 로그, 가중치, Detection 결과 등을 확인합니다.
+
+## Reference
+
+- [Merge_COCO_FILES](https://github.com/mohamadmansourX/Merge_COCO_FILES)
+- [cocosplit](https://github.com/akarazniewicz/cocosplit)
+- [2: Train with customized datasets](https://github.com/open-mmlab/mmdetection/blob/master/docs/en/2_new_data_model.md)
