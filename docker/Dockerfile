@@ -27,3 +27,26 @@ WORKDIR /mmdetection
 ENV FORCE_CUDA="1"
 RUN pip install --no-cache-dir -r requirements/build.txt
 RUN pip install --no-cache-dir -e .
+
+# Install MMCV
+RUN pip install --no-cache-dir --upgrade pip wheel setuptools
+RUN pip install --no-cache-dir mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.9.0/index.html
+
+# Install MMDetection
+RUN conda clean --all
+RUN git clone https://github.com/open-mmlab/mmdetection.git /mmdetection
+WORKDIR /mmdetection
+ENV FORCE_CUDA="1"
+RUN pip install --no-cache-dir -r requirements/build.txt
+RUN pip install --no-cache-dir -e .
+
+
+# Download Checkpoint
+RUN apt update -y
+RUN apt install wget
+RUN wget https://download.openmmlab.com/mmdetection/v2.0/mask_rcnn/mask_rcnn_r50_caffe_fpn_mstrain-poly_3x_coco/mask_rcnn_r50_caffe_fpn_mstrain-poly_3x_coco_bbox_mAP-0.408__segm_mAP-0.37_20200504_163245-42aa3d00.pth -P /mmdetection/checkpoints
+
+# Download Dataset
+RUN apt install unzip -y
+RUN wget "https://kyonggiackr-my.sharepoint.com/:u:/g/personal/201810548_kyonggi_ac_kr/EYjgHYYTWEBGmVK7wSKcIpQBbPlDPs6UGat9GhsiOdZcdQ?e=JbRGuO&download=1" -O /mmdetection/data/clothes.zip
+RUN unzip /mmdetection/data/clothes.zip -d /mmdetection/data/clothes
